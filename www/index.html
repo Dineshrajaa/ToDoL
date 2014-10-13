@@ -9,28 +9,11 @@
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>
     <script type="text/javascript">
-    /*
+    
     $(document).on('pagecreate',function(){
-            var $count=0;
-        $('#adder').click(function(){
-            var $todo=prompt("To-Do","What would you like me to Remember");
-            if ($todo!=null) {
-                {
-                    if ($todo==null) {
-                        alert("You can't add empty data");
-                    }
-                    else
-                        var $dict=$todo.text();
-                        var $content=$('<li><input type="checkbox" value="check"/></li>');
-                        $count++;
-                        alert($todo);
-                        $('#todolist').append($content).listview('refresh');
-                }
-
-            }
-        });
+            
     }); 
-    */
+    
     </script>
 </head>
 <body>
@@ -39,16 +22,14 @@
         <h1>ToDoL Logo</h1>
     </header>
     <article data-role="main" class="ui-content">
-        <center>
-        <!--
-        <input type="button" id="adder" value="Add To-Do" data-mini="true" data-inline="true" href="#todoadderpage" data-rel="dialog" data-transition="pop"/>        
-        -->
+        <center>        
         <a href="#todoadderpage" id="adderbtn" data-role="button" data-mini="true" data-inline="true" data-rel="dialog" data-transition="pop">Add To-Do</a>
         <input type="button" id="remover" value="Remove Completed Task" data-mini="true" data-inline="true"/>
         </center>
         <hr/>
         <ul id="todolist" data-role="listview" data-inset="true">
-            
+            <li data-role="list-divider">Your To-Do-List</li>
+           <li id="notodolist"><p>You Don't have any pending task</p></li>
         </ul>
         <br/><br/><br/>
 
@@ -58,21 +39,37 @@
     </footer>
 </section> 
 <section id="todoadderpage" data-role="page" data-close-btn="none">
-<header data-role="header" data-position="fixed" data-theme="b">
-    <h1>To-Do</h1>
-</header>
-<article data-role="main" class="ui-content">
-    <div data-role="fieldcontain">
-        <label for="todotitle">Title</label>
-        <input type="text" id="todotitle" data-mini="true"/><br/><br/><br/>
-        <label for="tododesc">Description</label>
-        <textarea id="tododesc"></textarea><br/><br/><br/>
+    <header data-role="header" data-position="fixed" data-theme="b">
+        <h1>To-Do</h1>
+    </header>
+    <article data-role="main" class="ui-content">
+    <form id="todoadderform">
+        <div data-role="fieldcontain">
+            <label for="todotitle">Title</label>
+            <input type="text" id="todotitle" data-mini="true"/><br/><br/><br/>
+            <label for="tododesc">Description</label>
+            <textarea id="tododesc"></textarea><br/><br/><br/>
+            <center>                    
+            <a href="#" id="todoaddercancelbtn" data-role="button" data-mini="true" data-inline="true" data-rel="back">Cancel</a>
+            <input type="button" id="todoadderokbtn" value="Ok" data-mini="true" data-inline="true"/>
+            </center>
+        </div>
+    </form>
+    </article>
+</section>
+<section id="todoviewerpage" data-role="page" data-close-btn="none">
+    <header data-role="header">
+        <h1>To-Do-Viewer</h1>
+    </header>
+    <article data-role="main" class="ui-content">
         <center>
-        <input type="button" id="todoadderbtn" value="Ok" data-mini="true" data-inline="true"/>        
-        <a href="#" id="todocancelbtn" data-role="button" data-mini="true" data-inline="true" data-rel="back">Cancel</a>
+            <label for="tododata"></label>
         </center>
-    </div>
-</article>
+        <p id="tododata"></p>
+        <center>
+            <a href="#" id="todoviewerokbtn" data-role="button" data-rel="back">Ok</a>
+        </center>
+    </article>
 </section>  
 </body>
 </html>
