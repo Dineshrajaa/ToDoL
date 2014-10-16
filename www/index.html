@@ -7,35 +7,45 @@
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>
-    <script type="text/javascript" src="js/ToDoL.js"></script> 
-    <script type="text/javascript">
-         $(document).on('pagecreate',function(){
-            var count=0;
-            $('#todoadderokbtn').bind('click',function(){
-                //e.preventDefault();
-                var todotit=$('#todotitle').val();
-                var tododes=$('#tododesc').val();
-                alert(todotit);
-                //addToDo(todotit,tododes);
+    <script type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>     
+    <script type="text/javascript"> 
+    var tasks=[];       
+        $(document).on("pagecreate","#todoadderpage",function(){
+            /*
+            var appendTaskToList=function(){
+                if (localStorage['tasks']) {
+                    var tasks = JSON.parse(localStorage['tasks']);
+
+                    $("#todolist").append("<li>"+tasks+"</li>");
+                    $("#todolist").listview("refresh");                  
+                    
+                }
+                
+            }
+            var addTask=function(){
+                //alert("Hello");
+                var val=$("#todotitle").val();
+                tasks.push(val);
+                console.log(tasks);
+                localStorage['tasks']=JSON.stringify(tasks);
+                appendTaskToList();
+                
+            }
+            $("#todoadderokbtn").click(addTask);
+            */
+             $("#todolist").html(localStorage.getItem('list'));
+            var $ul=$("#todolist");
+            $("#todoadderokbtn").click(function(){
+                var data=$("#todotitle").val();
+                $("#todolist").append("<li><input type='checkbox'/>"+data+"</li>");
+                localStorage.setItem('list', $("#todolist").html());
+                $("#todolist").html(localStorage.getItem('list'));
+                $.mobile.changePage("#landing");
             });
 
-            function addToDo(tt,td){
-                var values=[{"tile":tt,"descr":td}];
-                localStorage['data']=JSON.stringify(values);
-                displayList();
-            }
-            function displayList(){
-                var output=" ";
-                for (var i = 0; i < localStorage.length; i++) {
-                    output += '<li>'+localStorage.getItem(localStorage.key(i))+'</li>';
-                }
-                $('#todolist').html(output);
-                $('#todolist').listview("refresh");
-                };
-            }
-       });
-        
+            
+            
+        });
     </script>             
 </head>
 <body>
@@ -62,15 +72,13 @@
 </section> 
 <section id="todoadderpage" data-role="page" data-close-btn="none">
     <header data-role="header" data-position="fixed" data-theme="b">
-        <h1>To-Do</h1>
+        <h1>New To-Do</h1>
     </header>
     <article data-role="main" class="ui-content">
     <form id="todoadderform">
         <div data-role="fieldcontain">
             <label for="todotitle">Title</label>
-            <input type="text" id="todotitle" data-mini="true"/><br/><br/><br/>
-            <label for="tododesc">Description</label>
-            <textarea id="tododesc"></textarea><br/><br/><br/>
+            <input type="text" id="todotitle" data-mini="true"/><br/><br/><br/>            
             <center>                    
             <a href="#" id="todoaddercancelbtn" data-role="button" data-mini="true" data-inline="true" data-rel="back">Cancel</a>
             <input type="button" id="todoadderokbtn" value="Ok" data-mini="true" data-inline="true"/>
