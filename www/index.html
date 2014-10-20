@@ -4,102 +4,198 @@
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>ToDoL</title>
-    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+	</script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
+	</script>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+  <!--  <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.css">
+    
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>     
-    <script type="text/javascript"> 
-    var tasks=[];       
-        $(document).on("pagecreate","#todoadderpage",function(){
-            /*
-            var appendTaskToList=function(){
-                if (localStorage['tasks']) {
-                    var tasks = JSON.parse(localStorage['tasks']);
-
-                    $("#todolist").append("<li>"+tasks+"</li>");
-                    $("#todolist").listview("refresh");                  
-                    
-                }
-                
-            }
-            var addTask=function(){
-                //alert("Hello");
-                var val=$("#todotitle").val();
-                tasks.push(val);
-                console.log(tasks);
-                localStorage['tasks']=JSON.stringify(tasks);
-                appendTaskToList();
-                
-            }
-            $("#todoadderokbtn").click(addTask);
-            */
-             $("#todolist").html(localStorage.getItem('list'));
-            var $ul=$("#todolist");
-            $("#todoadderokbtn").click(function(){
-                var data=$("#todotitle").val();
-                $("#todolist").append("<li><input type='checkbox'/>"+data+"</li>");
-                localStorage.setItem('list', $("#todolist").html());
-                $("#todolist").html(localStorage.getItem('list'));
-                $.mobile.changePage("#landing");
-            });
-
-            
-            
-        });
-    </script>             
+    -->
+    <style type="text/css">
+    .completed{
+    	text-decoration: line-through;
+    }
+    .pending{
+    	text-decoration: none;
+    }
+    </style>
 </head>
-<body>
-<section id="landing" data-role="page">
-    <header data-role="header" data-position="fixed" data-theme="b">
-        <h1>ToDoL Logo</h1>
-    </header>
-    <article data-role="main" class="ui-content">
-        <center>        
-        <a href="#todoadderpage" id="adderbtn" data-role="button" data-mini="true" data-inline="true" data-rel="dialog" data-transition="pop">Add To-Do</a>
-        <input type="button" id="remover" value="Remove Completed Task" data-mini="true" data-inline="true"/>
-        </center>
-        <hr/>
-        <ul id="todolist" data-role="listview" data-inset="true">
-            <li data-role="list-divider">Your To-Do-List</li>
-           <li id="notodolist"><p>You Don't have any pending task</p></li>
-        </ul>
-        <br/><br/><br/>
-
-    </article>
-    <footer data-role="footer" data-position="fixed" data-theme="b">
-        <h1>&copy Reserved By Dinesh Raja</h1>
-    </footer>
-</section> 
-<section id="todoadderpage" data-role="page" data-close-btn="none">
-    <header data-role="header" data-position="fixed" data-theme="b">
-        <h1>New To-Do</h1>
-    </header>
-    <article data-role="main" class="ui-content">
-    <form id="todoadderform">
-        <div data-role="fieldcontain">
-            <label for="todotitle">Title</label>
-            <input type="text" id="todotitle" data-mini="true"/><br/><br/><br/>            
-            <center>                    
-            <a href="#" id="todoaddercancelbtn" data-role="button" data-mini="true" data-inline="true" data-rel="back">Cancel</a>
-            <input type="button" id="todoadderokbtn" value="Ok" data-mini="true" data-inline="true"/>
-            </center>
-        </div>
-    </form>
-    </article>
-</section>
-<section id="todoviewerpage" data-role="page" data-close-btn="none">
-    <header data-role="header">
-        <h1>To-Do-Viewer</h1>
-    </header>
-    <article data-role="main" class="ui-content">
-        <center>
-            <label for="tododata"></label>
-        </center>
-        <p id="tododata"></p>
-        <center>
-            <a href="#" id="todoviewerokbtn" data-role="button" data-rel="back">Ok</a>
-        </center>
-    </article>
-</section>  
+<body onload="onBodyLoad();">
+	<section id="#home" data-role="page">
+		<header data-role="header">
+			<h1>ToDoL</h1>
+		</header>
+		<article data-role="content">
+			<center>
+				<a href="#adderpage" id="adderlink" data-role="button" data-inline="true" data-rel="dialog" data-transition="pop">Add To-Do</a>
+				<input type="button" id="todoremover" data-inline="true" value="Remove Completed Tasks" />
+			</center>
+			<ul data-role="listview" data-inset="true" data-split-icon="minus" data-split-theme="d" id="todo_list">				
+			</ul>
+            
+		</article>
+		<footer data-role="footer" data-position="fixed">
+			<h1>&copy Reserved by Dinesh Raja</h1>
+		</footer>
+	</section>
+	<section id="adderpage" data-role="page" data-close-btn="none">
+		<header>
+			<h1>New To-Do</h1>
+		</header>
+		<article data-role="content">
+			<form>
+			<input type="text" id="tododata" />
+			<a href="#" data-role="button" data-rel="back" data-inline="true">Cancel</a>
+			<input type="button" id="okbtn" data-inline="true" value="Ok" onclick="save_todo()" />
+			</form>
+		</article>
+	</section>
 </body>
 </html>
+<!--<script type="text/javascript"> 
+    var i=localStorage.length;
+    	function browserCheck() {
+  			if (typeof(localStorage) == 'undefined' ) {
+    			alert('Your browser does not support HTML5 localStorage. Try upgrading.');
+ 			 }
+		}
+		function onBodyLoad(){
+			var todo="";
+			create_new_list();
+			console.log($("#remove").on("click",function(e){
+		var index = $(this).closest("li").attr("id");
+		$(this).closest("li").slideUp(function(){
+		
+			// remove the selected item
+			localStorage.removeItem('names_'+index);
+			
+			// rearrange localstorage array 
+			for(i=0; i<localStorage.length; i++) {
+			  if( !localStorage.getItem("names_"+i)) {
+				localStorage.setItem("names_"+i, localStorage.getItem('names_' + (i+1) ) );
+				localStorage.removeItem('names_'+ (i+1) );
+			  }
+			}
+			
+			// clear existing list UI
+			$("#todo_list").html("");
+			
+			// create new list
+			create_new_list();
+		});
+	}));
+
+		}
+		function create_new_list(){
+			for (var i = 0; i < localStorage.length; i++) {
+				todo=localStorage.getItem('names'+i);
+				$("#todo_list").append('<li id="'+i+'"><a href="#">'+todo+'</a><a href="#" data-rel="dialog" data-transition="slideup" id="remove">Remove</a></li>'); 			 
+			}
+			$("#todo_list").listview();
+    		$("#todo_list").listview("refresh");
+		}
+		function save_todo(){
+			var todo=$("#tododata").val();
+			if (todo.length) {
+				localStorage['names_'+i] = todo;
+				$("#todo_list").append('<li id="'+i+'"><a href="#">'+todo+'</a><a href="#" data-rel="dialog" data-transition="slideup" id="remove">Remove</a></li>');
+				$("#todo_list").listview();
+				$("#todo_list").listview("refresh");	
+				i++;
+				//$.mobile.changePage("#home");
+			}
+		}
+    </script>
+
+    -->
+
+    <script language="javascript">
+
+var i = localStorage.length;
+function onBodyLoad(){
+	var todo = "";
+	
+	create_new_list();
+	
+	$("#clear").click(function(){
+		localStorage.clear();
+		$("#todo_list li").fadeOut(function(){
+			$(this).html("");
+		});
+	});
+
+$(".togle").on("click",function(e){
+	$currentList=$(this).closest("li");
+	if (($currentList.attr("data"))=="done") {
+		$currentList.attr("data"," ");
+		//$currentList.css("text-decoration","none");
+		$currentList.removeClass("completed");
+		$currentList.addClass("pending");
+	}
+	else{
+		$currentList.attr("data","done");
+		//$currentList.css("text-decoration","line-through");
+		$currentList.removeClass("pending");
+		$currentList.addClass("completed");
+	}
+});
+$("#todoremover").click(function(){
+	$(".completed").remove();
+	
+});
+
+	$("#remove").live("click",function(e){
+		var index = $(this).closest("li").attr("id");
+		$(this).closest("li").slideUp(function(){
+		
+			// remove the selected item
+			localStorage.removeItem('names_'+index);
+			
+			// rearrange localstorage array 
+			for(i=0; i<localStorage.length; i++) {
+			  if( !localStorage.getItem("names_"+i)) {
+				localStorage.setItem("names_"+i, localStorage.getItem('names_' + (i+1) ) );
+				localStorage.removeItem('names_'+ (i+1) );
+			  }
+			}
+			
+			// clear existing list UI
+			$("#todo_list").html("");
+			
+			// create new list
+			create_new_list();
+		});
+	});
+	
+}
+function create_new_list(){
+	for (var i = 0; i < localStorage.length; i++){
+		todo = localStorage.getItem('names_'+i);
+		$("#todo_list").append('<li id="'+i+'" class="ui-field-contain pending" data=" "><input type="checkbox" id="chec'+i+'" class="togle"><a href="#">'+todo+'</a><a href="#" data-rel="dialog" data-transition="slideup" id="remove">Remove</a></li>');
+	}	
+	// Refresh list so jquery mobile can apply iphone look to the list
+	$("#todo_list").listview();
+	$("#todo_list").listview("refresh");	
+}
+
+
+function save_todo(){
+	var todo = $("#tododata").val();
+	if(todo.length){
+		// store item in local storage
+		localStorage['names_'+i] = todo;
+
+		// Update todo list
+		$("#todo_list").append('<li id="'+i+'" class="ui-field-contain pending" data=" "><input type="checkbox" id="chec'+i+'" class="togle"><a href="#">'+todo+'</a><a href="#" data-rel="dialog" data-transition="slideup" data-role="button" id="remove">Remove</a></li>');
+		
+		// Refresh list so jquery mobile can apply iphone look to the list
+		$("#todo_list").listview();
+		$("#todo_list").listview("refresh");	
+		i++;
+			}
+}
+</script>
